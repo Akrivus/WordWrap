@@ -1,0 +1,67 @@
+<div id="content">
+	<div class="score-container">
+		<div class="score" style="color:rgba(<%=255*([session["score"],-10].max/-10)%>,<%=255*([[0,session["score"]].max,25].min/25)%>,0,1);">
+			Score: <span id="score"><%=session["score"]%></span>
+		</div>
+		<div class="time">
+			Time Remaining: 0:<span id="seconds">20</span>
+		</div>
+	</div>
+	<div class="ques-container">
+		<h1 class="ques" id="word"></h1>
+		<h2 class="lang-container">
+			<span class="lang" id="lang"></span>
+	</div>
+	<hr />
+	<div class="word-container">
+		<ul class="answers">
+			<li class="answer" id="<%=answers[0]%>"><button><%=answers[0]%></button></li>
+			<li class="answer" id="<%=answers[1]%>"><button><%=answers[1]%></button></li>
+			<li class="answer" id="<%=answers[2]%>"><button><%=answers[2]%></button></li>
+			<li class="answer" id="<%=answers[3]%>"><button><%=answers[3]%></button></li>
+		</ul>
+	</div>
+</div>
+<script>
+	var word = "<%=question[:word]%>"
+	var lang = "<%=question[:lang]%>"
+	var seconds = 20;
+	var moved = false;
+	$(document).on('click', 'li', function(e) {
+		var uri = "<%=URL%>/check?lang=<%=question[:lang]%>&word=<%=question[:word]%>";
+		uri += "&answer=" + $(e.target).parent().attr('id');
+		$("#content").empty();
+		$("#content").hide();
+		$.get(uri, function(data) {
+			$("#content").append($.parseHTML(data));
+			$("#content").fadeIn(500);
+			moved = true;
+		});
+	});
+	$("#word").html(word);
+	$("#lang").html(lang);
+	$("#seconds").html(seconds);
+	var timer = setInterval(function() {
+		if (!moved) {
+			time = seconds.toString();
+			if (time.length < 2) {
+				time = "0" + time;
+			}
+			$(".time").css('color', 'rgba(' + (255 * (1-seconds/20)) + ',0,0,1)');
+			$("#seconds").html(time); 
+			--seconds;
+			if (seconds < 0 && !moved) {
+				$("#content").empty();
+				$("#content").hide();
+				$.get("<%=URL%>/time", function(data) {
+					$("#content").append($.parseHTML(data));
+					$("#content").fadeIn(500);
+					moved = true;
+				});
+			}
+			else if (seconds < 4) {
+				$(".time").css('font-weight', 'bold');
+			}
+		}
+	}, 800);
+</script>

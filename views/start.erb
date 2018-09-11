@@ -1,0 +1,33 @@
+<div id="content">
+	<h1><span id="word">Word</span> Wrap</h1>
+	<h2>A <span id="game">game</span> of tongues.</h2>
+	<hr />
+	<form id="start" action="<%=URL%>/play">
+		<select form="start" name="lang" id="lang">
+			<option value="All">Language: All</option>
+			<%DB.from(:words).select(:lang).uniq.each do |lang|%>
+				<option value="<%=lang[:lang]%>">Language: <%=lang[:lang]%></option>
+			<%end%>
+		</select>
+		<br />
+		<input type="submit" value="Start Game" />
+		<p>Contribute new words <a href="<%=URL%>/suggest">here.</a></p>
+	</form>
+</div>
+<script>
+	var words = ["Harf", "Zì", "Slovo", "Sermo", "Mot", "Ord", "Wort"];
+	var games = ["bazi", "yóuxì", "igra", "ludum", "jeu", "spel", "spiel"];
+	var interval = 0;
+	var flicker = setInterval(function() {
+		if (interval < 7) {
+			$("#word").html(words[interval]);
+			$("#game").html(games[interval]);
+		}
+		else {
+			$("#word").html("Word");
+			$("#game").html("game");
+			clearInterval(flicker);
+		}
+		++interval;
+	}, 100);
+</script>

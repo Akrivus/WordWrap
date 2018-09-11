@@ -1,0 +1,14 @@
+<ul>
+	<%DC.from(:contributions).all.each do |contrib|%>
+		<li><button>
+			<h4 style="text-align:left;"><%=contrib[:word]%> (<%=contrib[:answer]%>)</h4>
+			<h6 style="text-align:left;"><%=contrib[:lang]%></h6>
+			<hr />
+			<p style="text-align:left;margin-bottom:0.5rem;">
+				<a href="<%=URL%>/approve?id=<%=contrib[:id]%>">Approve</a>
+				&nbsp;or&nbsp;
+				<a href="<%=URL%>/reject?id=<%=contrib[:id]%>">Reject</a>
+			</p>
+		</button></li>
+	<%end%>
+</ul>

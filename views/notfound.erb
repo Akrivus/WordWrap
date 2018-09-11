@@ -1,0 +1,20 @@
+<div id="content">
+	<h1><span id="sorry">Sorry</span>!</h1>
+	<h2>This page doesn't exist.</h2>
+	<hr />
+	<button id="leave" onclick="document.href='/';">Go Back</button>
+</div>
+<script>
+	var sorries = ["Bebakhshid", "Duì bù qǐ", "Prosti", "Mea culpa", "Pardon", "Förlåt", "Es tut mir leid"]
+	var interval = 0;
+	var flicker = setInterval(function() {
+		if (interval < 7) {
+			$("#sorry").html(sorries[interval]);
+		}
+		else {
+			$("#sorry").html("Sorry");
+			clearInterval(flicker);
+		}
+		++interval;
+	}, 100);
+</script>
